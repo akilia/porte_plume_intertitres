@@ -43,29 +43,44 @@ function intertitres($t){
 		$level = (strlen($t[2]) - 1) + $base_level;
 		$titre = $t[3];
 		// extenders
-		$attributs = classer_attributs($t[5]);
+		if (isset($t[5])) {
+			$attributs = classer_attributs($t[5]);
+		}
+		
 	}else{
 		$level = $base_level;
 		$titre = $t[2];
 		// extenders
-		$attributs = classer_attributs($t[4]); // dans le cas des inter spip les extenders son en position 4
+		if (isset($t[4])) {
+			$attributs = classer_attributs($t[4]); // dans le cas des inter spip les extenders son en position 4
+		}
 	}
 
-	$css = $type.$level;
+	/* $css = $type.$level; why oh why ?*/
 
-	if(isset($attributs['css']))
+	$css ='spip';
+
+	if(isset($attributs['css'])){
 		$css .= $attributs['css'];
+	}
 
 	(isset($attributs['id'])) ?	$id = 'id="'.$attributs['id'].'"' : $id='';
 
-	if(isset($attributs['proprietes']))
-		$properties .= ' '.$attributs['proprietes'];
+	if(isset($attributs['proprietes'])) {
+		$properties = ' '.$attributs['proprietes'];
+	} else {
+		$properties = '';
+	}
+
+
 
 	// ne pas depasser h6
-	if($level < 7)
+	if($level < 7){
 		$html = "<h$level $id class=\"$css\"$properties>".$titre."</h$level>";
-  else
-		$html = "<div $id class=\"$css\"$properties>".$titre."</div>";
+	}
+	  else{
+			$html = "<div $id class=\"$css\"$properties>".$titre."</div>";
+	}
 
 	return $html;
 }
